@@ -3,14 +3,18 @@ import { useRef, useState } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle, ArrowRight } from "lucide-react";
 
 // =====================================================
-// FORMSPREE CONFIGURATION
-// Replace the placeholder below with your Formspree Form ID.
-// 1. Go to https://formspree.io and create a free account
-// 2. Create a new form and copy the form ID (e.g. "xyzabcde")
-// 3. Paste it below
+// GOOGLE APPS SCRIPT CONFIGURATION
+// Replace the placeholder below with your deployed Apps Script Web App URL.
+//
+// Setup steps:
+// 1. Open Google Sheets → Extensions → Apps Script
+// 2. Paste the doPost() script (see README.md)
+// 3. Deploy → New Deployment → Web App
+//    - Execute as: Me
+//    - Who has access: Anyone
+// 4. Copy the Web App URL and paste it below
 // =====================================================
-const FORMSPREE_FORM_ID = "YOUR_FORMSPREE_FORM_ID"; // <-- Replace this
-const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_FORM_ID}`;
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"; // <-- Replace this
 
 const serviceOptions = [
   "Sliding Windows",
@@ -58,20 +62,18 @@ export default function ContactSection() {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch(FORMSPREE_URL, {
+      const res = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-      if (res.ok) {
-        setSubmitted(true);
-        setForm({ name: "", email: "", phone: "", service: "", message: "", location: "" });
-      } else {
-        const data = await res.json();
-        setError(data?.errors?.[0]?.message || "Something went wrong. Please try again.");
-      }
+      // Google Apps Script with mode:"no-cors" returns opaque response,
+      // so we treat any non-error as success
+      setSubmitted(true);
+      setForm({ name: "", email: "", phone: "", service: "", message: "", location: "" });
     } catch (err) {
-      setError("Network error. Please check your connection and try again.");
+      setError("Failed to send message. Please try again.");
     } finally {
       setSubmitting(false);
     }
