@@ -1,142 +1,99 @@
 # High Square Aluminium - Premium Website
 
-A premium, ultra-modern showcase website for **High Square Aluminium by Monalisa Aluminium** — crafting premium aluminium solutions since 1998.
+A premium, ultra-modern static showcase website for **High Square Aluminium by Monalisa Aluminium** — crafting premium aluminium solutions since 1998.
 
 ## Tech Stack
 
 - **Frontend**: React 19 + Tailwind CSS + Framer Motion
-- **Backend**: FastAPI + MongoDB
-- **Animations**: Framer Motion (scroll reveals, parallax, 3D tilt, counters, marquee)
+- **Form Service**: Formspree (direct email delivery, no backend needed)
+- **Hosting**: GitHub Pages (static)
 
-## Getting Started
+---
 
-### Prerequisites
-- Node.js 18+
-- Python 3.10+
-- MongoDB
+## Quick Setup
 
-### Installation
+### 1. Install Dependencies
 
 ```bash
-# Clone the repo
-git clone <your-repo-url>
-cd high-square-aluminium
-
-# Backend
-cd backend
-pip install -r requirements.txt
-cp .env.example .env  # Update with your MongoDB URL
-uvicorn server:app --host 0.0.0.0 --port 8001
-
-# Frontend
 cd frontend
 yarn install
+```
+
+### 2. Configure Formspree (Contact Form → Email)
+
+The contact form sends enquiries directly to your email via [Formspree](https://formspree.io).
+
+**Steps:**
+1. Go to [https://formspree.io](https://formspree.io) and sign up (free plan supports 50 submissions/month)
+2. Click **New Form** → enter your email → create
+3. Copy the **Form ID** (e.g. `xyzabcde`)
+4. Open `frontend/src/components/ContactSection.jsx`
+5. Replace the placeholder on **line 13**:
+
+```js
+const FORMSPREE_FORM_ID = "YOUR_FORMSPREE_FORM_ID"; // <-- Replace with your ID
+```
+
+Example:
+```js
+const FORMSPREE_FORM_ID = "xyzabcde";
+```
+
+That's it — form submissions will now arrive in your email inbox.
+
+### 3. Configure GitHub Pages URL
+
+Open `frontend/package.json` and update the `homepage` field:
+
+```json
+"homepage": "https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME"
+```
+
+Example:
+```json
+"homepage": "https://monalisa-aluminium.github.io/high-square-website"
+```
+
+### 4. Run Locally
+
+```bash
+cd frontend
 yarn start
 ```
 
-### Environment Variables
-
-**Backend (`/backend/.env`)**:
-```
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=highsquare_db
-CORS_ORIGINS=*
-```
-
-**Frontend (`/frontend/.env`)**:
-```
-REACT_APP_BACKEND_URL=http://localhost:8001
-```
-
----
-
-## Google Sheets Integration (Contact Form)
-
-The contact form currently saves submissions to MongoDB. To also sync submissions to Google Sheets, follow these steps:
-
-### Step 1: Create a Google Cloud Project
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Click **Select Project** > **New Project**
-3. Name it: `high-square-aluminium`
-4. Click **Create**
-
-### Step 2: Enable Google Sheets API
-
-1. In your project, go to **APIs & Services** > **Library**
-2. Search for **Google Sheets API**
-3. Click **Enable**
-
-### Step 3: Create a Service Account
-
-1. Go to **APIs & Services** > **Credentials**
-2. Click **Create Credentials** > **Service Account**
-3. Name: `highsquare-sheets`
-4. Click **Create and Continue** > **Done**
-5. Click on the service account email
-6. Go to **Keys** tab > **Add Key** > **Create New Key** > **JSON**
-7. Download the JSON key file
-
-### Step 4: Create & Share the Google Sheet
-
-1. Create a new Google Sheet
-2. Add headers in Row 1: `Name | Email | Phone | Service | Message | Location | Submitted At`
-3. Copy the **Spreadsheet ID** from the URL:
-   ```
-   https://docs.google.com/spreadsheets/d/SPREADSHEET_ID_HERE/edit
-   ```
-4. Share the sheet with your service account email (found in the JSON key file as `client_email`) with **Editor** access
-
-### Step 5: Add Credentials to Backend
-
-Add these to your `/backend/.env`:
-
-```env
-GOOGLE_SHEETS_ENABLED=true
-GOOGLE_SPREADSHEET_ID=YOUR_SPREADSHEET_ID_HERE
-GOOGLE_SERVICE_ACCOUNT_JSON=path/to/your-service-account-key.json
-```
-
-### Step 6: Install Dependencies
+### 5. Deploy to GitHub Pages
 
 ```bash
-cd backend
-pip install google-auth google-auth-httplib2 google-api-python-client
+cd frontend
+yarn deploy
 ```
 
-Then integrate in `server.py` by importing the Google Sheets client and appending rows on each contact form submission.
+This builds the project and pushes to the `gh-pages` branch automatically.
+
+Then in your GitHub repo:
+1. Go to **Settings** → **Pages**
+2. Set Source to **Deploy from a branch**
+3. Select branch: `gh-pages` / `/ (root)`
+4. Save — your site will be live at the homepage URL
 
 ---
 
-## Deployment
+## Alternative Deployment Options
 
 ### Deploy to Vercel
 
-1. Push the `frontend` folder to GitHub
-2. Go to [Vercel](https://vercel.com)
-3. Import your repository
-4. Set the **Root Directory** to `frontend`
-5. Add environment variable: `REACT_APP_BACKEND_URL=https://your-backend-url.com`
-6. Deploy
+1. Push repo to GitHub
+2. Go to [vercel.com](https://vercel.com) → Import project
+3. Set **Root Directory** to `frontend`
+4. Deploy (no env variables needed)
 
 ### Deploy to Netlify
 
-1. Push the `frontend` folder to GitHub
-2. Go to [Netlify](https://netlify.com)
-3. Import from Git
-4. Set **Base directory** to `frontend`
-5. **Build command**: `yarn build`
-6. **Publish directory**: `frontend/build`
-7. Add environment variable: `REACT_APP_BACKEND_URL=https://your-backend-url.com`
-8. Deploy
-
-### Deploy Backend (Railway / Render)
-
-1. Push the `backend` folder to GitHub
-2. Go to [Railway](https://railway.app) or [Render](https://render.com)
-3. Create a new service from your repo
-4. Set **Root Directory** to `backend`
-5. Add environment variables (`MONGO_URL`, `DB_NAME`, `CORS_ORIGINS`)
+1. Push repo to GitHub
+2. Go to [netlify.com](https://netlify.com) → Import from Git
+3. Set **Base directory**: `frontend`
+4. **Build command**: `yarn build`
+5. **Publish directory**: `frontend/build`
 6. Deploy
 
 ---
@@ -144,41 +101,41 @@ Then integrate in `server.py` by importing the Google Sheets client and appendin
 ## Project Structure
 
 ```
-/
-├── backend/
-│   ├── server.py            # FastAPI application
-│   ├── requirements.txt     # Python dependencies
-│   └── .env                 # Environment variables
-│
-├── frontend/
-│   ├── public/
-│   │   └── index.html
-│   ├── src/
-│   │   ├── App.js           # Router
-│   │   ├── App.css          # Custom styles
-│   │   ├── index.css        # Global styles + CSS vars
-│   │   ├── pages/
-│   │   │   └── HomePage.jsx # Main page
-│   │   └── components/
-│   │       ├── Navbar.jsx
-│   │       ├── HeroSection.jsx
-│   │       ├── BrandStatement.jsx
-│   │       ├── AboutSection.jsx
-│   │       ├── ServicesSection.jsx
-│   │       ├── ProductShowcase.jsx
-│   │       ├── WhyChooseUs.jsx
-│   │       ├── ProjectsGallery.jsx
-│   │       ├── CustomSolutions.jsx
-│   │       ├── ContactSection.jsx
-│   │       ├── WhatsAppButton.jsx
-│   │       ├── Graphics.jsx
-│   │       └── Footer.jsx
-│   ├── package.json
-│   ├── tailwind.config.js
-│   └── .env
-│
-└── README.md
+frontend/
+├── public/
+│   └── index.html
+├── src/
+│   ├── App.js                    # Router (HashRouter for GH Pages compat)
+│   ├── App.css                   # Custom animations
+│   ├── index.css                 # Global styles + CSS variables
+│   ├── pages/
+│   │   └── HomePage.jsx          # Main page (all sections)
+│   └── components/
+│       ├── Navbar.jsx            # Navigation + scroll progress
+│       ├── HeroSection.jsx       # Fullscreen hero + parallax
+│       ├── BrandStatement.jsx    # Bold typography + marquee
+│       ├── AboutSection.jsx      # Company story + counters
+│       ├── ServicesSection.jsx   # 6 service cards + 3D tilt
+│       ├── ProductShowcase.jsx   # Product carousel
+│       ├── WhyChooseUs.jsx       # 5 differentiators
+│       ├── OurProcess.jsx        # 8-step zigzag timeline
+│       ├── ProjectsGallery.jsx   # Masonry gallery + lightbox
+│       ├── CustomSolutions.jsx   # 3 solution cards
+│       ├── ContactSection.jsx    # Form → Formspree → Email
+│       ├── WhatsAppButton.jsx    # Floating WhatsApp CTA
+│       ├── Graphics.jsx          # Decorative SVG animations
+│       └── Footer.jsx
+├── package.json
+├── tailwind.config.js
+└── postcss.config.js
 ```
+
+## Credentials Checklist
+
+| What | Where | How to Get |
+|------|-------|-----------|
+| Formspree Form ID | `src/components/ContactSection.jsx` line 13 | [formspree.io](https://formspree.io) → New Form |
+| GitHub Pages URL | `package.json` → `homepage` | Your GitHub repo URL |
 
 ## Contact
 

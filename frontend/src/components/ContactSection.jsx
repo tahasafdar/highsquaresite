@@ -1,9 +1,16 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle, ArrowRight } from "lucide-react";
-import axios from "axios";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+// =====================================================
+// FORMSPREE CONFIGURATION
+// Replace the placeholder below with your Formspree Form ID.
+// 1. Go to https://formspree.io and create a free account
+// 2. Create a new form and copy the form ID (e.g. "xyzabcde")
+// 3. Paste it below
+// =====================================================
+const FORMSPREE_FORM_ID = "YOUR_FORMSPREE_FORM_ID"; // <-- Replace this
+const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_FORM_ID}`;
 
 const serviceOptions = [
   "Sliding Windows",
@@ -51,11 +58,20 @@ export default function ContactSection() {
     setSubmitting(true);
     setError("");
     try {
-      await axios.post(`${API}/contact`, form);
-      setSubmitted(true);
-      setForm({ name: "", email: "", phone: "", service: "", message: "", location: "" });
+      const res = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+        setForm({ name: "", email: "", phone: "", service: "", message: "", location: "" });
+      } else {
+        const data = await res.json();
+        setError(data?.errors?.[0]?.message || "Something went wrong. Please try again.");
+      }
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      setError("Network error. Please check your connection and try again.");
     } finally {
       setSubmitting(false);
     }

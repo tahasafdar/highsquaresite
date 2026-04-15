@@ -5,7 +5,7 @@ import HomePage from "@/pages/HomePage";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>

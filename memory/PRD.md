@@ -4,9 +4,9 @@
 Premium, ultra-modern showcase website for "High Square Aluminium by Monalisa Aluminium" — a luxury aluminium brand serving Indore & Dewas since 1998. Deep matte black + metallic gold theme inspired by hline.in.
 
 ## Architecture
-- **Frontend**: React + Tailwind CSS + Framer Motion (animations)
-- **Backend**: FastAPI + MongoDB (contact form storage)
-- **Theme**: Dark (#0A0A0A) + Gold (#D4AF37)
+- **Frontend**: React + Tailwind CSS + Framer Motion (static, no backend)
+- **Form Service**: Formspree (direct email delivery)
+- **Hosting**: GitHub Pages / Vercel / Netlify (static)
 
 ## User Personas
 - Architects seeking premium aluminium partners
