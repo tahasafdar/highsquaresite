@@ -1,6 +1,6 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 
 const categories = [
   {
@@ -24,9 +24,24 @@ export default function ProductShowcase() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1);
 
-  const next = () => setActive((p) => (p + 1) % categories.length);
-  const prev = () => setActive((p) => (p - 1 + categories.length) % categories.length);
+  const navigate = (dir) => {
+    setDirection(dir);
+    setActive((p) => (p + dir + categories.length) % categories.length);
+  };
+
+  const imgVariants = {
+    enter: (d) => ({ opacity: 0, x: d > 0 ? 100 : -100, scale: 1.1 }),
+    center: { opacity: 1, x: 0, scale: 1 },
+    exit: (d) => ({ opacity: 0, x: d > 0 ? -100 : 100, scale: 0.95 }),
+  };
+
+  const textVariants = {
+    enter: { opacity: 0, y: 30 },
+    center: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
 
   return (
     <section
@@ -43,90 +58,141 @@ export default function ProductShowcase() {
           className="flex items-end justify-between mb-16"
         >
           <div>
-            <p className="text-xs tracking-[0.3em] uppercase text-[#D4AF37] mb-4">
-              Our Collection
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-bold uppercase tracking-tight font-['Oswald'] text-white">
-              Product Showcase
-            </h2>
+            <div className="flex items-center gap-3 mb-4">
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={inView ? { scaleX: 1 } : {}}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="w-8 h-px bg-[#D4AF37] origin-left"
+              />
+              <p className="text-xs tracking-[0.3em] uppercase text-[#D4AF37]">
+                Our Collection
+              </p>
+            </div>
+            <div className="overflow-hidden">
+              <motion.h2
+                initial={{ y: "100%" }}
+                animate={inView ? { y: 0 } : {}}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="text-4xl sm:text-5xl font-bold uppercase tracking-tight font-['Oswald'] text-white"
+              >
+                Product Showcase
+              </motion.h2>
+            </div>
           </div>
           <div className="hidden sm:flex gap-3">
-            <button
-              onClick={prev}
+            <motion.button
+              onClick={() => navigate(-1)}
               data-testid="product-prev-btn"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               className="w-12 h-12 border border-white/20 flex items-center justify-center hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors duration-300 text-white"
             >
               <ChevronLeft size={20} />
-            </button>
-            <button
-              onClick={next}
+            </motion.button>
+            <motion.button
+              onClick={() => navigate(1)}
               data-testid="product-next-btn"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               className="w-12 h-12 border border-white/20 flex items-center justify-center hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors duration-300 text-white"
             >
               <ChevronRight size={20} />
-            </button>
+            </motion.button>
           </div>
         </motion.div>
 
         {/* Product display */}
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-          {/* Image */}
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="aspect-[4/3] overflow-hidden relative"
-          >
-            <img
-              src={categories[active].image}
-              alt={categories[active].name}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 to-transparent" />
-          </motion.div>
+          {/* Image with mask transition */}
+          <div className="aspect-[4/3] overflow-hidden relative">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.img
+                key={active}
+                custom={direction}
+                variants={imgVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                src={categories[active].image}
+                alt={categories[active].name}
+                className="w-full h-full object-cover absolute inset-0"
+                loading="lazy"
+              />
+            </AnimatePresence>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 to-transparent z-10" />
 
-          {/* Info */}
+            {/* Image counter */}
+            <div className="absolute bottom-4 left-4 z-20 flex items-center gap-2">
+              {categories.map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="h-[2px] rounded-full"
+                  animate={{
+                    width: i === active ? 32 : 12,
+                    backgroundColor: i === active ? "#D4AF37" : "rgba(255,255,255,0.3)",
+                  }}
+                  transition={{ duration: 0.4 }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Info with animated transitions */}
           <div className="flex flex-col justify-center">
-            <motion.div
-              key={`info-${active}`}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="text-7xl lg:text-8xl font-black font-['Oswald'] gold-text opacity-30">
-                0{active + 1}
-              </span>
-              <h3 className="text-3xl lg:text-4xl font-bold font-['Oswald'] uppercase tracking-tight text-white -mt-4">
-                {categories[active].name}
-              </h3>
-              <p className="text-base leading-relaxed text-[#A3A3A3] mt-6 max-w-md">
-                {categories[active].desc}
-              </p>
-              <a
-                href="#contact"
-                data-testid="product-inquire-btn"
-                className="inline-block mt-8 border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A0A0A] transition-all duration-300 px-8 py-3 text-xs tracking-[0.2em] uppercase"
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                variants={textVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                Inquire Now
-              </a>
-            </motion.div>
+                <span className="text-7xl lg:text-8xl font-black font-['Oswald'] gold-text opacity-30">
+                  0{active + 1}
+                </span>
+                <h3 className="text-3xl lg:text-4xl font-bold font-['Oswald'] uppercase tracking-tight text-white -mt-4">
+                  {categories[active].name}
+                </h3>
+                <p className="text-base leading-relaxed text-[#A3A3A3] mt-6 max-w-md">
+                  {categories[active].desc}
+                </p>
+                <motion.a
+                  href="#contact"
+                  data-testid="product-inquire-btn"
+                  whileHover={{ x: 5 }}
+                  className="inline-flex items-center gap-2 mt-8 border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A0A0A] transition-all duration-300 px-8 py-3 text-xs tracking-[0.2em] uppercase group overflow-hidden relative"
+                >
+                  <span className="absolute inset-0 bg-[#D4AF37] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Inquire Now
+                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </motion.a>
+              </motion.div>
+            </AnimatePresence>
 
             {/* Category tabs */}
-            <div className="flex gap-4 mt-12">
+            <div className="flex gap-6 mt-12">
               {categories.map((cat, i) => (
                 <button
                   key={cat.name}
-                  onClick={() => setActive(i)}
+                  onClick={() => { setDirection(i > active ? 1 : -1); setActive(i); }}
                   data-testid={`product-tab-${cat.name.toLowerCase()}`}
-                  className={`text-xs tracking-[0.15em] uppercase pb-2 border-b-2 transition-all duration-300 ${
-                    i === active
-                      ? "text-[#D4AF37] border-[#D4AF37]"
-                      : "text-[#A3A3A3] border-transparent hover:text-white"
-                  }`}
+                  className="relative text-xs tracking-[0.15em] uppercase pb-2 transition-all duration-300"
                 >
-                  {cat.name}
+                  <span className={i === active ? "text-[#D4AF37]" : "text-[#A3A3A3] hover:text-white"}>
+                    {cat.name}
+                  </span>
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#D4AF37]"
+                    initial={false}
+                    animate={{ scaleX: i === active ? 1 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{ transformOrigin: "left" }}
+                  />
                 </button>
               ))}
             </div>
@@ -136,13 +202,13 @@ export default function ProductShowcase() {
         {/* Mobile arrows */}
         <div className="flex sm:hidden gap-3 mt-8 justify-center">
           <button
-            onClick={prev}
+            onClick={() => navigate(-1)}
             className="w-12 h-12 border border-white/20 flex items-center justify-center hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors text-white"
           >
             <ChevronLeft size={20} />
           </button>
           <button
-            onClick={next}
+            onClick={() => navigate(1)}
             className="w-12 h-12 border border-white/20 flex items-center justify-center hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors text-white"
           >
             <ChevronRight size={20} />
