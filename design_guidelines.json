@@ -1,0 +1,141 @@
+{
+  "theme": "dark",
+  "archetype": "5 (Jewel & Luxury) - Modified for Premium Architecture",
+  "colors": {
+    "background_primary": "#0A0A0A",
+    "background_secondary": "#121212",
+    "background_tertiary": "#1A1A1A",
+    "primary": "#D4AF37",
+    "primary_gradient": "linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA7C11 100%)",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#A3A3A3",
+    "border_subtle": "rgba(255, 255, 255, 0.1)",
+    "border_gold": "rgba(212, 175, 55, 0.3)"
+  },
+  "typography": {
+    "heading_font": "Cabinet Grotesk, 'Oswald', sans-serif",
+    "body_font": "Outfit, 'Manrope', sans-serif",
+    "h1": "text-5xl md:text-6xl lg:text-7xl tracking-tighter uppercase font-black leading-none",
+    "h2": "text-4xl sm:text-5xl tracking-tight uppercase font-bold",
+    "h3": "text-2xl sm:text-3xl tracking-tight",
+    "body": "text-base leading-relaxed text-[#A3A3A3]",
+    "overline": "text-xs tracking-[0.2em] uppercase text-[#D4AF37]"
+  },
+  "spacing": {
+    "section_padding": "py-24 lg:py-32",
+    "container": "max-w-7xl mx-auto px-6 lg:px-8",
+    "grid_gap": "gap-8 lg:gap-12"
+  },
+  "layout_patterns": {
+    "hero": "100vh full-bleed, content bottom-left aligned over dark image overlay",
+    "bento_grid": "grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-8",
+    "split_section": "grid md:grid-cols-2 gap-12 items-center"
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-transparent border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A0A0A] transition-colors duration-300 px-8 py-4 uppercase tracking-widest text-sm",
+      "secondary": "bg-transparent border border-white/20 text-white hover:bg-white/10 transition-colors duration-300 px-8 py-4 uppercase tracking-widest text-sm"
+    },
+    "cards": {
+      "service_card": "bg-[#121212] border border-white/5 hover:border-[#D4AF37]/30 p-8 transition-all duration-500 hover:-translate-y-2 group",
+      "project_card": "relative overflow-hidden group border border-white/10"
+    }
+  },
+  "motion_and_interactions": {
+    "scroll": "Lenis smooth scrolling mandatory for premium momentum feel",
+    "reveal": "Framer Motion 'fade up' and 'mask reveal' on scroll for typography and images",
+    "hover": "Images scale up slightly (1.05) inside hidden overflow containers; borders glow gold on hover",
+    "parallax": "Subtle y-axis parallax on hero images and large typography"
+  },
+  "media": {
+    "images": [
+      {
+        "category": "hero",
+        "url": "https://images.unsplash.com/photo-1767950470198-c9cd97f8ed87?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBsdXh1cnklMjBob21lJTIwZXh0ZXJpb3IlMjBuaWdodHxlbnwwfHx8fDE3NzYyMzMzMjF8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Dark luxury modern home exterior at night (Hero Background)"
+      },
+      {
+        "category": "about",
+        "url": "https://images.unsplash.com/photo-1758448617677-2f8bebc56d9e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBsdXh1cnklMjBob21lJTIwZXh0ZXJpb3IlMjBuaWdodHxlbnwwfHx8fDE3NzYyMzMzMjF8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Modern architecture with greenery"
+      },
+      {
+        "category": "products_windows",
+        "url": "https://images.pexels.com/photos/11823061/pexels-photo-11823061.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Minimalist blue glass windows architecture"
+      },
+      {
+        "category": "products_doors",
+        "url": "https://images.unsplash.com/photo-1578863236590-ea2f7341d652?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwZ2xhc3MlMjB3aW5kb3dzJTIwYXJjaGl0ZWN0dXJlfGVufDB8fHx8MTc3NjIzMzMyMXww&ixlib=rb-4.1.0&q=85",
+        "description": "Glass curtain wall structure"
+      },
+      {
+        "category": "services_partitions",
+        "url": "https://images.unsplash.com/photo-1770993151375-0dee97eda931?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2UlMjBnbGFzcyUyMHBhcnRpdGlvbnxlbnwwfHx8fDE3NzYyMzMzMjF8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Modern office glass partitions"
+      }
+    ],
+    "overlays": "Hero images must have a bg-black/50 to bg-black/70 gradient overlay to ensure text contrast"
+  },
+  "sections_structure": [
+    {
+      "name": "Hero",
+      "type": "fullscreen",
+      "details": "Background image, 'Crafting Premium Aluminium Spaces', 'Precision. Durability. Design Excellence since 1998', buttons: Explore Products, Get Quote"
+    },
+    {
+      "name": "Brand Statement",
+      "type": "typography_focus",
+      "details": "Massive text: 'Built with Precision. Designed for Modern Living.' Parallax effect."
+    },
+    {
+      "name": "About",
+      "type": "split_layout",
+      "details": "Established 1998, serving Indore & Dewas, 20+ years expertise. Side by side image and text."
+    },
+    {
+      "name": "Services",
+      "type": "bento_grid",
+      "details": "Grid of services: Sliding Windows, Casement Windows, Domal, Doors, Partitions, Invisible Grills. Dark cards with subtle border."
+    },
+    {
+      "name": "Product Showcase",
+      "type": "carousel",
+      "details": "Horizontal scrolling section for Windows, Doors, Partitions using Framer Motion."
+    },
+    {
+      "name": "Why Choose Us",
+      "type": "features_list",
+      "details": "Premium materials, expert craftsmanship. Large numbers and minimal text."
+    },
+    {
+      "name": "Projects",
+      "type": "masonry_gallery",
+      "details": "Masonry grid of project images with hover zoom effects."
+    },
+    {
+      "name": "Custom Solutions",
+      "type": "cta_section",
+      "details": "Custom profiles, powder coating. Gold accented section."
+    },
+    {
+      "name": "Contact",
+      "type": "form_and_info",
+      "details": "Premium form (Shadcn customized), locations (Indore, Dewas)."
+    },
+    {
+      "name": "Footer",
+      "type": "minimal",
+      "details": "Black + gold aesthetic, large logo mark, minimal links."
+    }
+  ],
+  "instructions_to_main_agent": [
+    "Strictly adhere to the dark theme (#0A0A0A base) with #D4AF37 gold accents.",
+    "Do NOT use generic Shadcn button styles. Use the customized primary/secondary button styles defined in components.",
+    "Implement Lenis for smooth scrolling.",
+    "Use Framer Motion for section reveals (fade up, stagger children) and image masks.",
+    "Images MUST NOT be used as pure backgrounds without heavy dark overlays (bg-black/50 minimum) to maintain text readability.",
+    "No pure white text on light backgrounds; always test against #0A0A0A.",
+    "Add 'data-testid' to all interactive elements."
+  ]
+}
